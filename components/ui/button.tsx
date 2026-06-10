@@ -7,7 +7,7 @@ type Size = "sm" | "md" | "lg" | "icon";
 const variants: Record<Variant, string> = {
   primary:
     "bg-ember text-ink-950 font-semibold hover:bg-ember-soft shadow-[0_8px_30px_-12px_var(--ember)]",
-  secondary: "bg-paper text-ink-950 font-semibold hover:bg-white",
+  secondary: "bg-paper text-ink-950 font-semibold hover:bg-paper-soft",
   outline:
     "border border-line-strong text-paper hover:bg-ink-850 hover:border-paper-faint",
   ghost: "text-paper-dim hover:text-paper hover:bg-ink-850",

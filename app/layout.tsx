@@ -19,13 +19,13 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wildfire.app"),
+  metadataBase: new URL("https://wildgrow.io"),
   title: {
-    default: "Wildfire — The organic growth engine for app founders",
-    template: "%s · Wildfire",
+    default: "Wildgrow — The organic growth engine for app founders",
+    template: "%s · Wildgrow",
   },
   description:
-    "Wildfire turns app founders into organic growth machines on TikTok & Instagram. AI-built content ideas, scripts, a viral playbook, and a step-by-step plan from zero to your first viral hit.",
+    "Wildgrow turns app founders into organic growth machines on TikTok & Instagram. AI-built content ideas, scripts, a viral playbook, and a step-by-step plan from zero to your first viral hit.",
   keywords: [
     "organic marketing",
     "tiktok growth",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "viral content",
   ],
   openGraph: {
-    title: "Wildfire — The organic growth engine for app founders",
+    title: "Wildgrow — The organic growth engine for app founders",
     description:
       "AI-built content ideas, scripts, a viral playbook, and a step-by-step plan to grow your app organically on TikTok & Instagram.",
     type: "website",

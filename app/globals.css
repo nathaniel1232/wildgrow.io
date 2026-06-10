@@ -1,41 +1,55 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ */
-/*  Wildfire — design tokens                                           */
-/*  Dark editorial. Warm near-black canvas, paper text, one ember      */
-/*  accent. No purple gradients, no slop.                              */
+/*  Wildgrow — design tokens                                           */
+/*  Light & natural. Warm-white canvas, deep-forest text, one natural  */
+/*  green accent. Bright, premium, botanical — no slop.                */
+/*                                                                     */
+/*  NOTE on token semantics (kept stable from the dark theme so the    */
+/*  app reskins without per-component edits):                          */
+/*   - "ink" scale = background/surface scale. ink-950 is the LIGHTEST */
+/*     base (body bg); higher-contrast steps (…700/600) are the        */
+/*     deeper subtle surfaces/fills used for borders & chips.          */
+/*   - "paper" = TEXT tiers. paper is primary deep-forest text;        */
+/*     soft/dim/faint are progressively muted but AA-legible.          */
+/*   - "ember" = the accent, now a natural green (kept the name so     */
+/*     bg-ember / text-ember / ring-ember keep working everywhere).    */
+/*   - "ink-950" doubles as the foreground on accent fills            */
+/*     (text-ink-950 on bg-ember/bg-up) → near-white on green = AA.    */
 /* ------------------------------------------------------------------ */
 
 :root {
-  /* Ink — warm near-blacks for canvas + surfaces */
-  --ink-950: #09090b;
-  --ink-925: #0c0c0f;
-  --ink-900: #101014;
-  --ink-850: #16161b;
-  --ink-800: #1c1c22;
-  --ink-750: #24242c;
-  --ink-700: #2e2e38;
-  --ink-600: #3c3c48;
+  /* Ink — warm-white canvas + light surfaces.
+     ink-950 = lightest (body bg) → ink-600 = deepest subtle surface. */
+  --ink-950: #fafaf7; /* warm white — body canvas */
+  --ink-925: #ffffff; /* pure white — raised cards / inputs */
+  --ink-900: #f4f6f0; /* default card surface */
+  --ink-850: #eef1e9; /* hover / raised surface */
+  --ink-800: #e6eae0; /* subtle fill (chips, tracks) */
+  --ink-750: #dde3d6; /* stronger fill / hover */
+  --ink-700: #cfd8c5; /* deep subtle surface / dotgrid dots */
+  --ink-600: #bdc8b1; /* deepest subtle surface */
 
-  /* Paper — warm off-whites for text */
-  --paper: #f3efe7;
-  --paper-soft: #d9d4ca;
-  --paper-dim: #9d978c;
-  --paper-faint: #6c6760;
+  /* Paper — deep-forest text tiers (primary → faint). */
+  --paper: #14271b;       /* primary text — deep forest */
+  --paper-soft: #2e4536;  /* secondary text / labels */
+  --paper-dim: #4f6557;   /* muted body / descriptions (AA on light) */
+  --paper-faint: #6c8073; /* faint hints / placeholders */
 
-  /* Ember — the single vivid accent (Wildfire) */
-  --ember: #ff5a36;
-  --ember-soft: #ff7e5f;
-  --ember-deep: #e6431f;
-  --amber: #ffb13d;
+  /* Ember — the single vivid accent, now natural green. */
+  --ember: #1b7a43;       /* primary green */
+  --ember-soft: #38b26a;  /* fresh leaf — hover / lighter accent */
+  --ember-deep: #135f35;  /* pressed / gradient anchor */
+  --amber: #b06d12;       /* warm signal, retuned for light */
 
-  /* Signal — used sparingly for metrics */
-  --up: #5fe39b;
-  --down: #ff6b6b;
+  /* Signal — used sparingly for metrics.
+     up == primary green so white (ink-950) text on bg-up stays AA. */
+  --up: #1b7a43;
+  --down: #c2410c;
 
-  /* Hairlines */
-  --line: rgba(243, 239, 231, 0.08);
-  --line-strong: rgba(243, 239, 231, 0.14);
+  /* Hairlines — deep-forest tint at low alpha for crisp light borders */
+  --line: rgba(20, 39, 27, 0.10);
+  --line-strong: rgba(20, 39, 27, 0.18);
 }
 
 @theme inline {
@@ -101,21 +115,21 @@ body {
 
 ::selection {
   background: var(--ember);
-  color: var(--ink-950);
+  color: var(--ink-925);
 }
 
-/* Scrollbar */
+/* Scrollbar — tuned for the light canvas */
 ::-webkit-scrollbar {
   width: 11px;
   height: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--ink-950);
+  background: var(--ink-900);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--ink-700);
   border-radius: 99px;
-  border: 3px solid var(--ink-950);
+  border: 3px solid var(--ink-900);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--ink-600);
@@ -138,29 +152,31 @@ h1, h2, h3, h4, .font-display {
 /*  Texture + atmosphere                                               */
 /* ------------------------------------------------------------------ */
 
-/* Film grain overlay — fixed, subtle, non-interactive */
+/* Film grain overlay — fixed, subtle, non-interactive.
+   Multiply-blended at low opacity so it reads as paper tooth on light. */
 .grain::before {
   content: "";
   position: fixed;
   inset: -50%;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Ember glow — a soft radial used behind hero / accents */
+/* Growth glow — a soft natural-green radial behind hero / accents */
 .glow-ember {
   background: radial-gradient(
     60% 60% at 50% 40%,
-    color-mix(in oklch, var(--ember) 55%, transparent) 0%,
-    color-mix(in oklch, var(--ember) 14%, transparent) 38%,
+    color-mix(in oklch, var(--ember-soft) 42%, transparent) 0%,
+    color-mix(in oklch, var(--ember-soft) 12%, transparent) 40%,
     transparent 72%
   );
 }
 
 .text-gradient-ember {
-  background: linear-gradient(100deg, var(--paper) 12%, var(--ember-soft) 55%, var(--amber) 92%);
+  background: linear-gradient(100deg, var(--paper) 8%, var(--ember) 52%, var(--ember-soft) 96%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -177,9 +193,10 @@ h1, h2, h3, h4, .font-display {
   background-size: 22px 22px;
 }
 
+/* Lift shadow — soft, layered for a light canvas (no inset white) */
 .shadow-lift {
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
-    0 24px 60px -28px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 2px -1px rgba(20, 39, 27, 0.10),
+    0 18px 48px -24px rgba(20, 39, 27, 0.28);
 }
 
 /* ------------------------------------------------------------------ */
@@ -210,7 +227,7 @@ h1, h2, h3, h4, .font-display {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(243, 239, 231, 0.05),
+    rgba(20, 39, 27, 0.07),
     transparent
   );
   animation: shimmer 1.6s infinite;

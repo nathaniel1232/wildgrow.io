@@ -32,6 +32,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# secrets — service-account keys, etc. (never commit)
+/.secrets/
+*-sa.json
+gcp-*.json
+
+# local sqlite database
+/prisma/*.db
+/prisma/*.db-journal
+/prisma/*.db-wal
 
 # vercel
 .vercel
@@ -39,3 +50,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/generated/prisma
+
+# Claude Code local settings (contains local API keys / allow-list — never commit)
+.claude/settings.local.json

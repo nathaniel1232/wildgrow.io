@@ -1,0 +1,113 @@
+// Wildgrow data model — SQLite for zero-setup local dev.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String  @id @default(cuid())
+  email        String  @unique
+  passwordHash String
+  name         String?
+  plan         String? // chosen at the paywall: "wildfire" | "studio" (null = not yet)
+
+  // Stripe billing. Null until the user starts a Checkout session.
+  stripeCustomerId String? @unique
+
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile      AppProfile?
+  ideas        Idea[]
+  progress     Progress[]
+  subscription Subscription?
+}
+
+// One active billing record per user, kept in sync from Stripe webhooks.
+// `status` mirrors Stripe's subscription status: trialing | active |
+// past_due | canceled | incomplete | incomplete_expired | unpaid | paused.
+// Access is granted for "active" and "trialing" (see lib/billing.ts).
+model Subscription {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stripeSubscriptionId String  @unique
+  stripeCustomerId     String?
+  status               String // Stripe subscription status
+  priceId              String? // the Stripe Price the subscription is on
+  plan                 String // "wildfire" | "studio"
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AppProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appName      String
+  category     String
+  oneLiner     String
+  audience     String
+  problem      String
+  appStoreUrl  String?
+  tiktokHandle String?
+  igHandle     String?
+  stage        String? // idea | prelaunch | launched | growing
+
+  // AI-derived growth profile (JSON-encoded strings; SQLite has no JSON type)
+  positioning String?
+  pillarsJson String? // [{ title, why, formats[] }]
+  personaJson String? // { name, bio, painPoints[], desires[], wateringHoles[] }
+  planJson    String? // { phases: [{ id, label, range, focus, items: [{ id, kind, title, detail }] }] }
+
+  onboarded Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Idea {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title        String
+  hook         String
+  format       String
+  lengthSec    Int?
+  scriptJson   String // [{ t, label, text }]
+  onScreenJson String? // string[]
+  caption      String
+  hashtagsJson String // string[]
+  sound        String?
+  rationale    String?
+  hookScore    Int?
+  pillar       String?
+  basedOn      String? // real trending video this idea adapts (live data only)
+  status       String   @default("new") // new | saved | filmed | posted
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String // playbook | lesson | plan
+  key       String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, kind, key])
+  @@index([userId, kind])
+}

@@ -28,3 +28,27 @@ export function initials(name: string): string {
     .join("")
     .toUpperCase();
 }
+
+export function tiktokSearchUrl(query: string): string {
+  return `https://www.tiktok.com/search?q=${encodeURIComponent(query)}`;
+}
+
+/** Official embed-player src for a real post URL, or null if not embeddable. */
+export function embedSrc(video: {
+  platform: string;
+  url?: string;
+}): string | null {
+  if (!video.url) return null;
+  if (video.platform === "tiktok") {
+    // Handle canonical /video/{id}, m.tiktok /v/{id}.html, share_item_id=, etc.
+    const m =
+      video.url.match(/(?:\/video\/|\/v\/|item_id=|share_item_id=)(\d{6,})/) ??
+      video.url.match(/(\d{15,})/);
+    return m ? `https://www.tiktok.com/embed/v2/${m[1]}` : null;
+  }
+  if (video.platform === "instagram") {
+    const m = video.url.match(/(reel|p)\/([A-Za-z0-9_-]+)/);
+    return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed` : null;
+  }
+  return null;
+}
