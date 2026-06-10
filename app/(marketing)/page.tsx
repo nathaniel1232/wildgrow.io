@@ -19,14 +19,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { ProductPreview } from "@/components/marketing/product-preview";
 import { ProofCards } from "@/components/marketing/proof-cards";
 import { Faq } from "@/components/marketing/faq";
-import {
-  GrowthField,
-  PhoneMock,
-  ReelScreen,
-  GrowthCurve,
-  FlowConnector,
-  Leaf,
-} from "@/components/marketing/visuals";
+import { PhoneMock, ReelScreen, Leaf } from "@/components/marketing/visuals";
 import { ACADEMY_MODULES, LESSONS, lessonsByModule } from "@/lib/content/lessons";
 
 const niches = [
@@ -45,39 +38,21 @@ const niches = [
 ];
 
 const problems = [
-  {
-    icon: Eye,
-    title: "Posts that flop",
-    body: "Three views — two of them you.",
-  },
-  {
-    icon: Wand2,
-    title: "Nothing to film",
-    body: "Blank camera roll, blinking cursor.",
-  },
-  {
-    icon: Wallet,
-    title: "Ads burn runway",
-    body: "Paid growth stops when the money does.",
-  },
+  { icon: Eye, title: "You post. It flops.", body: "Three views — two of them you, checking it posted." },
+  { icon: Wand2, title: "You don't know what to film.", body: "Blank camera roll. Blinking cursor. You'd rather ship code." },
+  { icon: Wallet, title: "Ads eat the runway.", body: "Paid growth is a treadmill that stops the second the money does." },
 ];
 
 const steps = [
-  {
-    n: "01",
-    title: "Tell us your app",
-    body: "Two minutes. No account needed.",
-  },
-  {
-    n: "02",
-    title: "Get your playbook",
-    body: "A daily feed of fully-scripted video ideas.",
-  },
-  {
-    n: "03",
-    title: "Post & compound",
-    body: "Follow the 30/60/90 plan. Momentum builds.",
-  },
+  { n: "01", title: "Tell us your app", body: "Two minutes. No account needed." },
+  { n: "02", title: "Get your playbook", body: "A daily feed of fully-scripted video ideas." },
+  { n: "03", title: "Post & compound", body: "Follow the 30/60/90 plan. Momentum builds." },
+];
+
+const milestones = [
+  { day: "Day 30", label: "Find your hook" },
+  { day: "Day 60", label: "Hit a breakout" },
+  { day: "Day 90", label: "Compound it" },
 ];
 
 const plans = [
@@ -129,37 +104,40 @@ export default function LandingPage() {
   return (
     <>
       {/* ---------------------------------------------------------------- HERO */}
-      <section className="relative overflow-hidden pb-24 pt-36 md:pt-44">
+      <section className="relative overflow-hidden pb-28 pt-36 md:pt-44">
         {/* soft growth glow */}
         <div
           aria-hidden
-          className="glow-ember pointer-events-none absolute left-1/2 top-[-140px] h-[660px] w-[min(960px,96vw)] -translate-x-1/2 opacity-70 blur-[26px]"
+          className="glow-ember pointer-events-none absolute left-1/2 top-[-160px] h-[620px] w-[min(900px,96vw)] -translate-x-1/2 opacity-60 blur-[30px]"
         />
-        {/* botanical contour field */}
-        <GrowthField className="pointer-events-none absolute inset-x-0 top-0 h-[760px] w-full opacity-60 [mask-image:radial-gradient(70%_60%_at_50%_28%,black,transparent)]" />
-        {/* fine dot grid */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-[700px] bg-dotgrid opacity-[0.28] [mask-image:radial-gradient(58%_46%_at_50%_26%,black,transparent)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[620px] bg-dotgrid opacity-[0.22] [mask-image:radial-gradient(56%_44%_at_50%_22%,black,transparent)]"
         />
 
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-            {/* ---- copy column (tight) ---- */}
+          <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            {/* ---- copy column ---- */}
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
               <Reveal>
-                <Eyebrow>Organic growth engine for app founders</Eyebrow>
+                <span className="inline-flex items-center gap-2 rounded-full border border-line bg-ink-925/80 px-3.5 py-1.5 text-sm text-paper-soft shadow-sm">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ember/15 text-ember">
+                    <Leaf size={12} />
+                  </span>
+                  Organic growth engine for app founders
+                </span>
               </Reveal>
               <Reveal delay={0.05}>
-                <h1 className="mt-6 text-balance text-5xl font-extrabold leading-[0.98] text-paper md:text-7xl">
+                <h1 className="mt-6 text-balance text-5xl font-extrabold leading-[0.95] text-paper md:text-[5.25rem]">
                   Silent launch to{" "}
                   <span className="text-gradient-ember">for-you page</span>.
                 </h1>
               </Reveal>
               <Reveal delay={0.1}>
                 <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-paper-dim">
-                  The ideas, scripts, and plan to grow your app on TikTok &amp;
-                  Instagram — no ads, no agency.
+                  Wildgrow hands you the ideas, the scripts, and the day-by-day
+                  plan to grow your app on TikTok &amp; Instagram. No ads. No
+                  agency. No dancing required.
                 </p>
               </Reveal>
               <Reveal delay={0.15}>
@@ -177,10 +155,7 @@ export default function LandingPage() {
               </Reveal>
               <Reveal delay={0.2}>
                 <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-                  <Link
-                    href="/onboarding"
-                    className={buttonVariants({ size: "lg" })}
-                  >
+                  <Link href="/onboarding" className={buttonVariants({ size: "lg" })}>
                     Start free trial <ArrowRight size={18} />
                   </Link>
                   <Link
@@ -198,30 +173,22 @@ export default function LandingPage() {
               </Reveal>
             </div>
 
-            {/* ---- visual column: phone mock + product card ---- */}
-            <Reveal delay={0.2}>
-              <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                {/* phone running a reel */}
-                <div className="animate-float mx-auto w-[210px] sm:w-[240px]">
+            {/* ---- visual: the script → the actual post ---- */}
+            <Reveal delay={0.15}>
+              <div className="relative mx-auto w-full max-w-[440px] lg:mr-4 lg:max-w-none">
+                {/* the generated script — the hero asset */}
+                <div className="relative z-10">
+                  <ProductPreview />
+                </div>
+                {/* the video it becomes — a real reel, tucked at the corner */}
+                <div className="animate-float absolute -bottom-12 right-0 z-20 w-[118px] rotate-6 drop-shadow-2xl sm:-right-6 sm:w-[150px]">
                   <PhoneMock>
                     <ReelScreen />
                   </PhoneMock>
                 </div>
-                {/* the generated script card, overlapping for depth */}
-                <div className="relative z-10 mx-auto -mt-24 w-[min(420px,92%)] sm:-mt-28">
-                  <ProductPreview />
-                </div>
-                {/* floating "fresh ideas" chip — accent, not a duplicate stat */}
-                <div className="absolute -left-2 top-6 z-20 hidden rounded-xl border border-line bg-ink-925 px-3 py-2 shadow-lift lg:flex lg:items-center lg:gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-ember/12 text-ember">
-                    <Leaf size={14} />
-                  </span>
-                  <div className="leading-tight">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-paper-faint">
-                      New ideas
-                    </p>
-                    <p className="font-display text-base font-bold text-paper">Daily</p>
-                  </div>
+                {/* arrow label connecting the two */}
+                <div className="absolute -bottom-7 left-1 z-20 hidden items-center gap-1.5 rounded-full border border-line bg-ink-925 px-3 py-1.5 text-xs font-medium text-paper-soft shadow-lift sm:flex">
+                  script <ArrowRight size={13} className="text-ember" /> a real post
                 </div>
               </div>
             </Reveal>
@@ -264,27 +231,22 @@ export default function LandingPage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="The founder’s dilemma"
-              title="Shipping is easy. Getting seen is where apps die."
-              description="You can build a feature in a weekend. Distribution is the wall — and it’s exactly the wall Wildgrow is built to break."
+              eyebrow="The founder's dilemma"
+              title="You can ship a feature in a weekend. So why is growth impossible?"
+              description="Building was the part you're good at. Getting seen is where great apps quietly die — and it's the exact gap Wildgrow is built to close."
             />
           </Reveal>
           <Stagger className="mt-14 grid gap-5 md:grid-cols-3">
             {problems.map((p) => (
               <StaggerItem key={p.title}>
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-ink-900 p-7">
-                  {/* faint wilting-leaf motif = the problem state */}
-                  <Leaf
-                    size={120}
-                    className="pointer-events-none absolute -right-6 -top-6 rotate-180 text-paper-faint/10"
-                  />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-ink-850 text-down">
+                <div className="group h-full rounded-2xl border border-line bg-ink-900 p-7 transition-colors hover:border-down/30">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-down/10 text-down">
                     <p.icon size={22} />
                   </div>
-                  <h3 className="relative mt-5 font-display text-xl font-semibold text-paper">
+                  <h3 className="mt-5 font-display text-xl font-semibold text-paper">
                     {p.title}
                   </h3>
-                  <p className="relative mt-2 text-[15px] leading-relaxed text-paper-dim">
+                  <p className="mt-2 text-[15px] leading-relaxed text-paper-dim">
                     {p.body}
                   </p>
                 </div>
@@ -308,13 +270,11 @@ export default function LandingPage() {
               className="mx-auto items-center"
             />
           </Reveal>
-          <Stagger className="relative mt-16 grid gap-6 md:grid-cols-3">
-            {/* growing-vine connector behind the cards (desktop) */}
-            <FlowConnector className="pointer-events-none absolute left-[14%] right-[14%] top-[2rem] hidden h-10 md:block" />
+          <Stagger className="mt-16 grid gap-6 md:grid-cols-3">
             {steps.map((s) => (
               <StaggerItem key={s.n}>
                 <div className="relative h-full rounded-2xl border border-line bg-ink-900 p-7 text-center md:text-left">
-                  <span className="glow-ember relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-ember/30 bg-ink-925 font-mono text-lg font-bold text-ember shadow-[0_8px_30px_-12px_var(--ember)] md:mx-0">
+                  <span className="glow-ember relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-ember to-ember-deep font-display text-xl font-extrabold text-white shadow-[0_10px_30px_-10px_var(--ember)] md:mx-0">
                     {s.n}
                   </span>
                   <h3 className="mt-5 font-display text-xl font-semibold text-paper">
@@ -391,7 +351,7 @@ export default function LandingPage() {
                   </h3>
                 </div>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-paper-dim">
-                  See who’s already winning in your space.
+                  See who's already winning in your space.
                 </p>
                 <div className="mt-6 space-y-2.5">
                   {[
@@ -446,9 +406,7 @@ export default function LandingPage() {
                       </span>
                       <span
                         className={
-                          i < 2
-                            ? "text-paper-dim line-through"
-                            : "text-paper-soft"
+                          i < 2 ? "text-paper-dim line-through" : "text-paper-soft"
                         }
                       >
                         {t}
@@ -459,7 +417,7 @@ export default function LandingPage() {
               </div>
             </Reveal>
 
-            {/* Plan — now with a real growth curve */}
+            {/* Plan — clean milestone pills (no fake chart) */}
             <Reveal delay={0.05}>
               <div className="flex h-full flex-col rounded-2xl border border-line bg-ink-900 p-7">
                 <div className="flex items-center gap-2.5">
@@ -473,11 +431,21 @@ export default function LandingPage() {
                 <p className="mt-2.5 text-[15px] leading-relaxed text-paper-dim">
                   A day-by-day roadmap to your first breakout.
                 </p>
-                <div className="mt-auto pt-6">
-                  <GrowthCurve className="h-24 w-full" />
-                  <span className="mt-2 block font-mono text-[10px] uppercase tracking-wider text-paper-faint">
-                    Projected reach · weeks 1–8
-                  </span>
+                <div className="mt-auto space-y-2 pt-6">
+                  {milestones.map((m, i) => (
+                    <div
+                      key={m.day}
+                      className="flex items-center gap-3 rounded-lg border border-line bg-ink-850 px-3 py-2"
+                    >
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ember/12 font-mono text-[11px] font-semibold text-ember">
+                        {i + 1}
+                      </span>
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-paper-faint">
+                        {m.day}
+                      </span>
+                      <span className="text-sm text-paper-soft">{m.label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </Reveal>
@@ -494,7 +462,7 @@ export default function LandingPage() {
                   </h3>
                 </div>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-paper-dim">
-                  Learn short-form like a creator who’s done it 10,000 times.
+                  Learn short-form like a creator who's done it 10,000 times.
                 </p>
                 <div className="mt-6 space-y-2">
                   {[
@@ -537,10 +505,7 @@ export default function LandingPage() {
                   ~{Math.round(academyTotalMinutes / 5) * 5} min total
                 </Badge>
               </div>
-              <Link
-                href="/onboarding"
-                className={buttonVariants({ className: "mt-8" })}
-              >
+              <Link href="/onboarding" className={buttonVariants({ className: "mt-8" })}>
                 Open the Academy <ArrowRight size={18} />
               </Link>
             </div>
@@ -559,13 +524,10 @@ export default function LandingPage() {
                     <p className="font-display text-base font-medium leading-snug text-paper">
                       {mod.title}
                     </p>
-                    <p className="mt-0.5 truncate text-xs text-paper-dim">
-                      {mod.blurb}
-                    </p>
+                    <p className="mt-0.5 truncate text-xs text-paper-dim">{mod.blurb}</p>
                   </div>
                   <span className="shrink-0 font-mono text-xs text-paper-faint">
-                    {mod.lessonCount}{" "}
-                    {mod.lessonCount === 1 ? "lesson" : "lessons"}
+                    {mod.lessonCount} {mod.lessonCount === 1 ? "lesson" : "lessons"}
                   </span>
                 </div>
               ))}
@@ -580,8 +542,8 @@ export default function LandingPage() {
           <Reveal>
             <SectionHeading
               eyebrow="Why this works"
-              title="We didn’t invent the playbook. We made it usable."
-              description="Wildgrow is new — so instead of stock-photo testimonials, here’s the honest case: real, sourced results from the companies whose methods this is built on. Their numbers, not ours — click any card to verify."
+              title="We didn't invent the playbook. We made it usable."
+              description="Wildgrow is new — so instead of stock-photo testimonials, here's the honest case: real, sourced results from the companies whose methods this is built on. Their numbers, not ours — click any card to verify."
               align="center"
               className="mx-auto items-center"
             />
@@ -600,11 +562,10 @@ export default function LandingPage() {
                   <Sparkles size={16} />
                 </span>
                 <p className="text-sm leading-relaxed text-paper-dim">
-                  <span className="font-medium text-paper">Early access.</span>{" "}
-                  Those are other teams’ results — proof the methods work, not
-                  Wildgrow’s own numbers. We’re building in public, so real
-                  founder stories will land here as they happen. No fake reviews,
-                  ever.
+                  <span className="font-medium text-paper">Early access.</span> Those
+                  are other teams' results — proof the methods work, not Wildgrow's
+                  own numbers. We're building in public, so real founder stories will
+                  land here as they happen. No fake reviews, ever.
                 </p>
               </div>
               <Link
@@ -632,7 +593,7 @@ export default function LandingPage() {
             <SectionHeading
               eyebrow="Pricing"
               title="One simple plan. Cancel anytime."
-              description="Start free — no card required. Everything unlocked while we’re in beta."
+              description="Start free — no card required. Everything unlocked while we're in beta."
               align="center"
               className="mx-auto items-center"
             />
@@ -660,9 +621,7 @@ export default function LandingPage() {
                     <span className="font-display text-4xl font-extrabold text-paper">
                       {plan.price}
                     </span>
-                    <span className="text-sm text-paper-faint">
-                      {plan.cadence}
-                    </span>
+                    <span className="text-sm text-paper-faint">{plan.cadence}</span>
                   </div>
                   <ul className="mt-6 flex-1 space-y-3">
                     {plan.features.map((f) => (
@@ -686,8 +645,8 @@ export default function LandingPage() {
             ))}
           </div>
           <p className="mt-6 text-center text-xs text-paper-faint">
-            Billing isn’t wired up during the beta — every plan is unlocked when
-            you sign up.
+            Billing isn't wired up during the beta — every plan is unlocked when you
+            sign up.
           </p>
         </Container>
       </section>
@@ -709,31 +668,31 @@ export default function LandingPage() {
       </section>
 
       {/* ----------------------------------------------------------- FINAL CTA */}
-      <section className="relative overflow-hidden border-t border-line py-28">
-        <div
-          aria-hidden
-          className="glow-ember pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[820px] -translate-x-1/2 -translate-y-1/2 opacity-60 blur-[18px]"
-        />
-        <GrowthField className="pointer-events-none absolute inset-0 h-full w-full opacity-50 [mask-image:radial-gradient(60%_70%_at_50%_50%,black,transparent)]" />
-        <Container className="relative flex flex-col items-center text-center">
+      <section className="px-4 pb-24 pt-4 md:pb-32">
+        <Container>
           <Reveal>
-            <h2 className="max-w-2xl text-balance font-display text-4xl font-extrabold leading-[1.05] text-paper md:text-6xl">
-              Your next 10,000 users are scrolling right now.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-5 max-w-md text-lg text-paper-dim">
-              Give them something worth stopping for. Your first ideas are ready
-              in minutes.
-            </p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <Link
-              href="/onboarding"
-              className={buttonVariants({ size: "lg", className: "mt-9" })}
-            >
-              Start free trial <ArrowRight size={18} />
-            </Link>
+            <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-ember-deep via-ember to-ember-soft px-6 py-20 text-center shadow-[0_40px_90px_-45px_var(--ember)] md:py-24">
+              {/* subtle texture */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-dotgrid opacity-[0.18] mix-blend-overlay"
+              />
+              <div className="relative">
+                <h2 className="mx-auto max-w-2xl text-balance font-display text-4xl font-extrabold leading-[1.05] text-white md:text-6xl">
+                  Your next 10,000 users are scrolling right now.
+                </h2>
+                <p className="mx-auto mt-5 max-w-md text-lg text-white/85">
+                  Give them something worth stopping for. Your first ideas are ready
+                  in minutes.
+                </p>
+                <Link
+                  href="/onboarding"
+                  className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-ember-deep shadow-lg transition hover:bg-white/90"
+                >
+                  Start free trial <ArrowRight size={18} />
+                </Link>
+              </div>
+            </div>
           </Reveal>
         </Container>
       </section>
