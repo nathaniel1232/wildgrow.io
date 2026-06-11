@@ -70,6 +70,24 @@ export function trialDays(): number {
   return Number.isFinite(n) && n >= 0 ? n : 0;
 }
 
+// ----------------------------------------------------------- Free-access codes
+// Shareable promo codes that unlock the app for free (no card, no Stripe).
+// Set FREE_ACCESS_CODES as a comma-separated, case-insensitive list in the env;
+// defaults to a single code so "try it free" works out of the box.
+
+export function freeAccessCodes(): string[] {
+  const raw = process.env.FREE_ACCESS_CODES ?? "WILDGROW";
+  return raw
+    .split(",")
+    .map((c) => c.trim().toUpperCase())
+    .filter(Boolean);
+}
+
+export function isValidFreeCode(code: string): boolean {
+  const c = code.trim().toUpperCase();
+  return c.length > 0 && freeAccessCodes().includes(c);
+}
+
 // --------------------------------------------------------------- Access state
 
 export type BillingAccess = {

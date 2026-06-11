@@ -24,6 +24,7 @@ import {
   priceIdFor,
   normalizePlan,
   trialDays,
+  isValidFreeCode,
 } from "./billing";
 import { headers } from "next/headers";
 import type { GeneratedIdea, SocialVideo } from "./types";
@@ -130,6 +131,31 @@ export async function choosePlan(formData: FormData) {
 
   // Couldn't reach Stripe — don't strand the user; unlock locally.
   await prisma.user.update({ where: { id: user.id }, data: { plan } });
+  redirect("/app");
+}
+
+// ----------------------------------------------------------- Free-access code
+
+export type RedeemState = { error?: string } | undefined;
+
+/**
+ * Redeem a free-access code → unlock the app with no charge. Works whether or
+ * not Stripe is configured: it grants a plan so hasAccess() lets the user in,
+ * and never creates a Stripe customer or subscription.
+ */
+export async function redeemCode(
+  _prev: RedeemState,
+  formData: FormData,
+): Promise<RedeemState> {
+  const user = await requireUser();
+  const code = String(formData.get("code") ?? "");
+  if (!isValidFreeCode(code)) {
+    return { error: "That code isn’t valid. Double-check it and try again." };
+  }
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { plan: "wildfire" },
+  });
   redirect("/app");
 }
 

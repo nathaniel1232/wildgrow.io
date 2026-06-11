@@ -6,6 +6,7 @@ import { hasAccess } from "@/lib/billing";
 import { choosePlan } from "@/lib/app-actions";
 import { Logo } from "@/components/ui/logo";
 import { buttonVariants } from "@/components/ui/button";
+import { RedeemCode } from "@/components/app/redeem-code";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Choose your plan" };
@@ -60,7 +61,7 @@ export default async function WelcomePage() {
           <p className="mt-3 text-paper-dim">
             Your growth plan for{" "}
             <span className="text-paper">{user.profile.appName}</span> is ready.
-            Start your free trial to unlock it — no card required during beta.
+            Start a 7-day free trial below — or redeem a code to jump in free.
           </p>
         </div>
 
@@ -115,9 +116,18 @@ export default async function WelcomePage() {
           ))}
         </div>
 
-        <p className="mt-6 text-center text-xs text-paper-faint">
-          Billing isn’t active during the beta — both plans are fully unlocked.
-        </p>
+        {/* Free-access code — try it without a card */}
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <div className="flex w-full max-w-sm items-center gap-3 font-mono text-xs uppercase tracking-wider text-paper-faint">
+            <span className="h-px flex-1 bg-line" />
+            or try it free
+            <span className="h-px flex-1 bg-line" />
+          </div>
+          <RedeemCode />
+          <p className="text-center text-xs text-paper-faint">
+            Got an invite code? Redeem it for full access — no card, no charge.
+          </p>
+        </div>
       </div>
     </div>
   );
