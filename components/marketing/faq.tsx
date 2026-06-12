@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const faqs = [
@@ -32,34 +31,71 @@ const faqs = [
   },
 ];
 
+/** Sprout indicator: a stem with one leaf; opening grows the second. */
+function SproutGlyph({ open }: { open: boolean }) {
+  return (
+    <svg
+      width={20}
+      height={20}
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden
+      className={cn(
+        "shrink-0 transition-colors duration-300",
+        open ? "text-ember" : "text-paper-dim",
+      )}
+    >
+      <path
+        d="M10 17V9"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+      <path
+        d="M10 11C10 7.5 7.8 5.4 4.5 5c-0.4 3.4 1.6 5.8 5.5 6Z"
+        fill="currentColor"
+        opacity={0.55}
+      />
+      <motion.path
+        d="M10 9.5C10 5.6 12.4 3 15.8 2.6c0.4 3.9-1.9 6.6-5.8 6.9Z"
+        fill="currentColor"
+        initial={false}
+        animate={
+          open
+            ? { opacity: 1, scale: 1, rotate: 0 }
+            : { opacity: 0, scale: 0.3, rotate: -25 }
+        }
+        transition={{ type: "spring", stiffness: 260, damping: 18 }}
+        style={{ transformBox: "fill-box", transformOrigin: "0% 100%" }}
+      />
+    </svg>
+  );
+}
+
 export function Faq() {
   const [open, setOpen] = React.useState<number | null>(0);
 
   return (
-    <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-ink-900">
+    <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-ink-900/80">
       {faqs.map((item, i) => {
         const isOpen = open === i;
         return (
-          <div key={item.q}>
+          <div key={item.q} className={cn(isOpen && "bg-ink-850/40")}>
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
               aria-expanded={isOpen}
+              aria-controls={`faq-answer-${i}`}
             >
               <span className="font-display text-base font-medium text-paper md:text-lg">
                 {item.q}
               </span>
-              <Plus
-                size={20}
-                className={cn(
-                  "shrink-0 text-paper-dim transition-transform duration-300",
-                  isOpen && "rotate-45 text-ember",
-                )}
-              />
+              <SproutGlyph open={isOpen} />
             </button>
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
+                  id={`faq-answer-${i}`}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}

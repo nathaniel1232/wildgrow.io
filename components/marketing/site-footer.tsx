@@ -6,24 +6,25 @@ const cols = [
   {
     title: "Product",
     links: [
-      { href: "/#features", label: "Features" },
-      { href: "/#how", label: "How it works" },
+      { href: "/#how", label: "How it grows" },
+      { href: "/#engine", label: "The engine" },
       { href: "/#pricing", label: "Pricing" },
-      { href: "/onboarding", label: "Start free trial" },
+      { href: "/onboarding", label: "Start growing" },
     ],
   },
   {
     title: "Learn",
     links: [
+      { href: "/#why", label: "The problem" },
       { href: "/#academy", label: "Viral Academy" },
+      { href: "/#evidence", label: "The evidence" },
       { href: "/#faq", label: "FAQ" },
-      { href: "/login", label: "Log in" },
     ],
   },
   {
     title: "Company",
     links: [
-      { href: "/#why", label: "Manifesto" },
+      { href: "/login", label: "Log in" },
       { href: "/#faq", label: "How our data works" },
       { href: "mailto:hello@wildgrow.io", label: "Contact" },
     ],
@@ -32,14 +33,14 @@ const cols = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-ink-950">
-      <Container className="py-16">
+    <footer className="relative overflow-hidden border-t border-line bg-ink-950">
+      <Container className="relative py-16">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-xs">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-paper-dim">
-              The organic growth engine for app founders. Turn your app into a
-              feed-stopping machine on TikTok &amp; Instagram.
+              The organic growth engine for app founders. Scripts, signals, and
+              a plan — your app, growing wild on TikTok &amp; Instagram.
             </p>
             <p className="mt-4 font-mono text-xs tracking-wide text-paper-faint">
               wildgrow.io
@@ -74,7 +75,23 @@ export function SiteFooter() {
             connected.
           </p>
         </div>
+
+        <p className="mt-6 font-mono text-[11px] leading-relaxed text-paper-faint">
+          Set in Bricolage Grotesque, Geist &amp; Geist Mono. Every visual on
+          this page is hand-drawn SVG and CSS — no stock photos were available,
+          or necessary.
+        </p>
       </Container>
+
+      {/* watermark — the brand, half-buried in the soil */}
+      <div
+        aria-hidden
+        className="pointer-events-none select-none overflow-hidden"
+      >
+        <p className="-mb-[0.34em] bg-gradient-to-b from-ink-800 to-transparent bg-clip-text text-center font-display text-[clamp(5rem,18vw,15rem)] font-extrabold leading-none tracking-[-0.04em] text-transparent">
+          Wildgrow
+        </p>
+      </div>
     </footer>
   );
 }

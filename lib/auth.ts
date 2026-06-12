@@ -51,10 +51,17 @@ async function getUserId(): Promise<string | null> {
 export const getCurrentUser = cache(async () => {
   const uid = await getUserId();
   if (!uid) return null;
-  return prisma.user.findUnique({
-    where: { id: uid },
-    include: { profile: true, subscription: true },
-  });
+  try {
+    return await prisma.user.findUnique({
+      where: { id: uid },
+      include: { profile: true, subscription: true },
+    });
+  } catch (err) {
+    // A stale session cookie must never 500 a public page when the DB is
+    // down or misconfigured — treat the visitor as signed out instead.
+    console.error("[auth] getCurrentUser DB lookup failed:", err);
+    return null;
+  }
 });
 
 export type CurrentUser = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;

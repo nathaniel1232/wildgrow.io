@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Check } from "lucide-react";
 import { requireUser } from "@/lib/auth";
-import { hasAccess } from "@/lib/billing";
+import { hasAccess, hasStripe } from "@/lib/billing";
 import { choosePlan } from "@/lib/app-actions";
 import { Logo } from "@/components/ui/logo";
 import { buttonVariants } from "@/components/ui/button";
@@ -46,6 +46,10 @@ export default async function WelcomePage() {
   if (!user.profile?.onboarded) redirect("/onboarding");
   if (hasAccess(user)) redirect("/app");
 
+  // With Stripe unconfigured (beta), picking a plan unlocks everything
+  // free of charge — the copy must promise exactly that, not a trial.
+  const billing = hasStripe();
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div
@@ -61,7 +65,9 @@ export default async function WelcomePage() {
           <p className="mt-3 text-paper-dim">
             Your growth plan for{" "}
             <span className="text-paper">{user.profile.appName}</span> is ready.
-            Start a 7-day free trial below — or redeem a code to jump in free.
+            {billing
+              ? " Start a 7-day free trial below — or redeem a code to jump in free."
+              : " Pick a plan to unlock everything — free while we're in beta, no card needed."}
           </p>
         </div>
 
@@ -109,7 +115,7 @@ export default async function WelcomePage() {
                     "w-full",
                   )}
                 >
-                  Start 7-day free trial
+                  {billing ? "Start 7-day free trial" : "Unlock free during beta"}
                 </button>
               </form>
             </div>

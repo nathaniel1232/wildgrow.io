@@ -33,36 +33,3 @@ export function Eyebrow({
   );
 }
 
-export function SectionHeading({
-  eyebrow,
-  title,
-  description,
-  align = "left",
-  className,
-}: {
-  eyebrow?: string;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  align?: "left" | "center";
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col gap-4",
-        align === "center" && "items-center text-center",
-        className,
-      )}
-    >
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.08] text-paper md:text-[2.6rem]">
-        {title}
-      </h2>
-      {description && (
-        <p className="max-w-xl text-pretty text-base leading-relaxed text-paper-dim md:text-lg">
-          {description}
-        </p>
-      )}
-    </div>
-  );
-}

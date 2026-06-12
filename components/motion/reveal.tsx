@@ -3,13 +3,22 @@
 import { motion, type Variants } from "framer-motion";
 import * as React from "react";
 
+/* The transition lives inside the variant and reads the per-instance
+   delay from `custom` — a component-level `transition` prop would be
+   overridden by the variant's own transition and silently ignored.
+   The delay key is only included when set: an explicit delay (even 0)
+   would override a parent's staggerChildren orchestration. */
 const variants: Variants = {
   hidden: { opacity: 0, y: 18 },
-  show: {
+  show: (delay?: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] },
-  },
+    transition: {
+      duration: 0.6,
+      ease: [0.21, 0.47, 0.32, 0.98],
+      ...(delay ? { delay } : {}),
+    },
+  }),
 };
 
 export function Reveal({
@@ -31,7 +40,7 @@ export function Reveal({
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
       variants={variants}
-      transition={{ delay }}
+      custom={delay}
     >
       {children}
     </MotionTag>

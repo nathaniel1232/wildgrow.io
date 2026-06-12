@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 const perks = [
   { icon: Sparkles, text: "AI video ideas + full scripts for your exact app" },
   { icon: ListChecks, text: "A launch playbook from setup to your first viral hit" },
-  { icon: CalendarRange, text: "A 30/60/90 plan from cold start to first viral hit" },
+  { icon: CalendarRange, text: "A 30/60/90 plan from cold start to compounding growth" },
 ];
 
 export default async function AuthLayout({
@@ -19,7 +19,10 @@ export default async function AuthLayout({
   if (user) redirect("/app");
 
   return (
-    <div className="relative min-h-screen lg:grid lg:grid-cols-2">
+    <div
+      data-theme="night"
+      className="relative min-h-screen bg-ink-950 text-paper lg:grid lg:grid-cols-2"
+    >
       <aside className="relative hidden flex-col justify-between overflow-hidden border-r border-line bg-ink-925 p-12 lg:flex">
         <div
           aria-hidden

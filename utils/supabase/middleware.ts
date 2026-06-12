@@ -15,9 +15,15 @@ export async function updateSession(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-  // No Supabase configured → pass through untouched. (Scaffolding guard so the
-  // app keeps booting on SQLite without Supabase env present.)
-  if (!url || !key) {
+  // No Supabase configured → pass through untouched. Treat the .env.example
+  // placeholders as "not configured" too, so a copied template doesn't make
+  // every request attempt auth against a non-existent host.
+  if (
+    !url ||
+    !key ||
+    url.includes("your-project-ref") ||
+    key === "sb_publishable_..."
+  ) {
     return supabaseResponse;
   }
 

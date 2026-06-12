@@ -34,7 +34,7 @@
   --paper: #14271b;       /* primary text — deep forest */
   --paper-soft: #2e4536;  /* secondary text / labels */
   --paper-dim: #4f6557;   /* muted body / descriptions (AA on light) */
-  --paper-faint: #6c8073; /* faint hints / placeholders */
+  --paper-faint: #5b6f62; /* faint hints / placeholders (AA ≥4.5:1 on canvas) */
 
   /* Ember — the single vivid accent, now natural green. */
   --ember: #1b7a43;       /* primary green */
@@ -50,6 +50,75 @@
   /* Hairlines — deep-forest tint at low alpha for crisp light borders */
   --line: rgba(20, 39, 27, 0.10);
   --line-strong: rgba(20, 39, 27, 0.18);
+}
+
+/* ------------------------------------------------------------------ */
+/*  "Night" theme — the public marketing surface (Undergrowth).        */
+/*  Scoped: any subtree with data-theme="night" flips every token to   */
+/*  the bioluminescent dark palette. The authenticated app never sets  */
+/*  the attribute, so it keeps the light botanical theme above.        */
+/* ------------------------------------------------------------------ */
+
+[data-theme="night"] {
+  /* Ink — moss-black canvas, never pure #000. */
+  --ink-950: #050807; /* body canvas */
+  --ink-925: #090e0b; /* panels / inputs */
+  --ink-900: #0c1310; /* default card surface */
+  --ink-850: #121b15; /* hover / raised surface */
+  --ink-800: #18231b; /* subtle fill (chips, tracks) */
+  --ink-750: #1e2b22; /* stronger fill / hover */
+  --ink-700: #29382e; /* dotgrid dots */
+  --ink-600: #36483c; /* deepest subtle surface */
+
+  /* Paper — moonlit text tiers. (faint holds 4.5:1 on raised cards) */
+  --paper: #eaf4ed;
+  --paper-soft: #c3d4c8;
+  --paper-dim: #94aa9b;
+  --paper-faint: #768c7d;
+
+  /* Ember — bioluminescent bloom. ink-950 stays the fg on accent
+     fills: near-black text on bright green = strong contrast. */
+  --ember: #4ce081;       /* primary bloom */
+  --ember-soft: #8ff7b4;  /* hot glow core / hover */
+  --ember-deep: #1b7a43;  /* brand-green anchor (continuity with app) */
+  --amber: #ffc97a;       /* firefly counterpoint — max once per viewport */
+
+  --up: #4ce081;
+  --down: #ff8f6b;
+
+  --line: rgba(234, 244, 237, 0.08);
+  --line-strong: rgba(234, 244, 237, 0.16);
+
+  color-scheme: dark;
+}
+
+/* Overscroll, root color-scheme, and the document scrollbar must all
+   match the night canvas when the page shown is a night page — the
+   data-theme attribute sits on an inner div, so the root needs its own
+   :has() hooks (custom properties don't inherit upward). */
+body:has([data-theme="night"]) {
+  background-color: #050807;
+}
+
+:root:has([data-theme="night"]) {
+  color-scheme: dark;
+  scrollbar-color: #29382e #0c1310; /* Firefox */
+}
+:root:has([data-theme="night"])::-webkit-scrollbar-track {
+  background: #0c1310;
+}
+:root:has([data-theme="night"])::-webkit-scrollbar-thumb {
+  background: #29382e;
+  border-color: #0c1310;
+}
+:root:has([data-theme="night"])::-webkit-scrollbar-thumb:hover {
+  background: #36483c;
+}
+
+/* Film grain reads as screen-light on the night canvas, not multiply. */
+body:has([data-theme="night"])::before {
+  mix-blend-mode: screen;
+  opacity: 0.04;
 }
 
 @theme inline {
@@ -210,6 +279,156 @@ h1, h2, h3, h4, .font-display {
 .animate-marquee {
   animation: marquee 38s linear infinite;
 }
+/* WCAG 2.2.2 — auto-moving content can be paused by the reader */
+.animate-marquee:hover,
+.animate-marquee:focus-within {
+  animation-play-state: paused;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Undergrowth — night-theme atmosphere + set-piece motion            */
+/* ------------------------------------------------------------------ */
+
+/* Bioluminescent glow behind hero / accents (night palette). */
+[data-theme="night"] .glow-ember {
+  background: radial-gradient(
+    60% 60% at 50% 40%,
+    rgba(76, 224, 129, 0.16) 0%,
+    rgba(27, 122, 67, 0.07) 45%,
+    transparent 72%
+  );
+}
+
+[data-theme="night"] .text-gradient-ember {
+  background: linear-gradient(100deg, var(--paper) 4%, var(--ember) 55%, var(--ember-soft) 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+[data-theme="night"] .shadow-lift {
+  box-shadow: 0 1px 0 rgba(234, 244, 237, 0.04) inset,
+    0 24px 60px -28px rgba(0, 0, 0, 0.8);
+}
+
+/* Hairline that reads as "lit" by the vine. */
+.lit-line {
+  border-color: rgba(76, 224, 129, 0.28);
+}
+
+/* Hero headline — line-mask rise. Pure CSS so the entrance plays
+   before React hydrates. Each .hero-line sits in an overflow-hidden
+   .hero-mask; stagger via --d (delay). */
+.hero-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em; /* keep descenders unclipped */
+  margin-bottom: -0.08em;
+}
+.hero-line {
+  display: block;
+  transform: translateY(110%);
+  animation: hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hero-rise {
+  to { transform: translateY(0); }
+}
+.hero-fade {
+  opacity: 0;
+  animation: hero-fade-in 0.8s ease-out forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hero-fade-in {
+  to { opacity: 1; }
+}
+
+/* Phone screen power-on: 3-step brightness flicker. */
+@keyframes power-on {
+  0% { opacity: 0; filter: brightness(2.4); }
+  35% { opacity: 0.55; filter: brightness(0.6); }
+  55% { opacity: 0.25; filter: brightness(1.8); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+.animate-power-on {
+  animation: power-on 0.5s ease-out forwards;
+}
+
+/* Vine node breathing — phase-stagger via --d. */
+@keyframes node-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+.animate-node {
+  animation: node-breathe 4s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Radar: conic sweep arm (compositor-only) + angle-synced blips.
+   Blip delay = angle/360 * 4s, set inline via --d. */
+@keyframes radar-sweep {
+  to { transform: rotate(360deg); }
+}
+.animate-radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}
+@keyframes radar-blip {
+  0%, 6% { opacity: 1; }
+  10%, 100% { opacity: 0.25; }
+}
+.animate-radar-blip {
+  animation: radar-blip 4s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Aurora — final CTA backdrop: two drifting radial fields. */
+@keyframes aurora-a {
+  0%, 100% { transform: translate(-12%, -6%) scale(1); }
+  50% { transform: translate(10%, 8%) scale(1.15); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate(14%, 10%) scale(1.1); }
+  50% { transform: translate(-10%, -8%) scale(0.95); }
+}
+.aurora-a { animation: aurora-a 16s ease-in-out infinite; }
+.aurora-b { animation: aurora-b 19s ease-in-out infinite; }
+
+/* Soft pulsing cue (scroll node, live dots). */
+@keyframes cue-pulse {
+  0%, 100% { opacity: 0.45; box-shadow: 0 0 0 0 rgba(76, 224, 129, 0.5); }
+  50% { opacity: 1; box-shadow: 0 0 0 7px rgba(76, 224, 129, 0); }
+}
+.animate-cue {
+  animation: cue-pulse 2.4s ease-in-out infinite;
+}
+
+/* Acid strikethrough — draws across dead-draft ledger lines.
+   Background-gradient based so it survives line wraps (each wrapped
+   fragment gets its own strike via box-decoration-break). */
+.strike-draw {
+  background-image: linear-gradient(to right, var(--ember), var(--ember));
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 58%;
+  transition: background-size 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.in-view .strike-draw {
+  background-size: 100% 2px;
+}
+
+/* Reduced motion: hero entrance must land in final state.
+   (body.force-motion — set via ?motion=on — opts back into animation.) */
+@media (prefers-reduced-motion: reduce) {
+  body:not(.force-motion) .hero-line { transform: none; animation: none; }
+  body:not(.force-motion) .hero-fade { opacity: 1; animation: none; }
+  body:not(.force-motion) .strike-draw {
+    transition: none;
+    background-size: 100% 2px;
+  }
+}
 
 @keyframes shimmer {
   100% { transform: translateX(100%); }
@@ -239,17 +458,32 @@ h1, h2, h3, h4, .font-display {
 }
 .animate-float { animation: float-slow 7s ease-in-out infinite; }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.9; }
-}
-.animate-pulse-glow { animation: pulse-glow 5s ease-in-out infinite; }
-
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  body:not(.force-motion) *,
+  body:not(.force-motion) *::before,
+  body:not(.force-motion) *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  /* the smooth-scroll rule lives on html, which the * above misses */
+  html:not(:has(body.force-motion)) {
+    scroll-behavior: auto;
+  }
+}
+
+/* ?motion=off — the JS override mirrors the reduced-motion CSS too */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+body.reduce-motion .hero-line { transform: none; animation: none; }
+body.reduce-motion .hero-fade { opacity: 1; animation: none; }
+body.reduce-motion .strike-draw {
+  transition: none;
+  background-size: 100% 2px;
 }

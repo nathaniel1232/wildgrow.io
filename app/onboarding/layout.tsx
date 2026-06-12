@@ -11,7 +11,10 @@ export default async function OnboardingLayout({
   if (user?.profile?.onboarded && user.plan) redirect("/app");
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div
+      data-theme="night"
+      className="relative min-h-screen overflow-hidden bg-ink-950 text-paper"
+    >
       <div
         aria-hidden
         className="glow-ember pointer-events-none absolute left-1/2 top-[-160px] h-[480px] w-[760px] -translate-x-1/2 opacity-40 blur-[30px]"
